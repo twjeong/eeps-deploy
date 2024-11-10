@@ -1,0 +1,41 @@
+{
+    "language": "lua",
+    "version": "0.2",
+    "functions": [
+        {
+            "name": "delete",
+            "arguments": [],
+            "view": false,
+            "payable": false,
+            "feeDelegation": false
+        },
+        {
+            "name": "add",
+            "arguments": [],
+            "view": false,
+            "payable": false,
+            "feeDelegation": false
+        },
+        {
+            "name": "update",
+            "arguments": [],
+            "view": false,
+            "payable": false,
+            "feeDelegation": false
+        },
+        {
+            "name": "get",
+            "arguments": [],
+            "view": false,
+            "payable": false,
+            "feeDelegation": false
+        }
+    ],
+    "state_variables": [
+        {
+            "name": "user",
+            "type": "map",
+            "len": 0
+        }
+    ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "eeps",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "tsc && node dist/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@herajs/client": "^2.1.1"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.9",
+    "@types/node": "^22.9.0",
+    "typescript": "^5.6.3"
+  }
+}
