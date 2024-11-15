@@ -1,7 +1,11 @@
 import { AergoClient, Contract, GrpcProvider } from "@herajs/client";
 import fs from "fs";
 import { resolve } from "path";
+import dotenv from 'dotenv';
 import contractAbi from "./contract/user.abi.json";
+
+const envFile = process.env.NODE_ENV === 'production' ? '.env.production' : '.env.test';
+dotenv.config({ path: envFile });
 
 async function longPolling(
   pollFn: () => Promise<any>,
@@ -25,11 +29,14 @@ async function main() {
   let receipt;
   const aergo = new AergoClient(
     {},
-    new GrpcProvider({ url: "testnet-api.aergo.io:7845" })
+    new GrpcProvider({ url: process.env.ENDPOINT })
   );
-  const myAddress = "AmLom8y5LK341mTERsRvUkdWzBmCmqrLmMS6nr1rFBM43opkSKDq"; // Enter your account address or name
+  const myAddress = process.env.ACCOUNT_ADDRESS;
+  if (!myAddress) {
+    throw new Error("ACCOUNT_ADDRESS is not defined in the environment variables");
+  }
   const contractCode = fs
-    .readFileSync(resolve(__dirname, "../contract/user.lua"))
+    .readFileSync(resolve(__dirname, "./contract/user.lua"))
     .toString()
     .trim();
 

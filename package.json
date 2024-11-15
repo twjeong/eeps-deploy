@@ -4,13 +4,15 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "start": "tsc && node dist/index.js"
+    "start": "NODE_ENV=test ts-node index.ts",
+    "start:production": "NODE_ENV=production ts-node index.ts"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@herajs/client": "^2.1.1"
+    "@herajs/client": "^2.1.1",
+    "dotenv": "^16.4.5"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.9",

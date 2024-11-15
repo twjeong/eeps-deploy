@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const client_1 = require("@herajs/client");
 const fs_1 = __importDefault(require("fs"));
 const path_1 = require("path");
-const user_abi_json_1 = __importDefault(require("./contract/user.abi.json"));
 function longPolling(pollFn, conditionFn, interval) {
     return __awaiter(this, void 0, void 0, function* () {
         while (true) {
@@ -53,30 +52,31 @@ function main() {
         //console.log(receipt);
         const contractAddress = receipt.contractaddress;
         console.log("contract address: ", contractAddress.toString());
-        const contract = client_1.Contract.fromAbi(user_abi_json_1.default).setAddress(contractAddress);
-        // add
-        const callTx = contract.add('nathan', myAddress).asTransaction({
-            from: myAddress,
-            chainIdHash: yield aergo.getChainIdHash(),
-        });
-        const calltxhash = yield aergo.accounts.sendTransaction(callTx);
-        yield sleep(3000);
-        receipt = yield aergo.getTransactionReceipt(calltxhash);
-        console.log(receipt);
-        // get
-        const result = yield aergo.queryContract(contract.get("nathan"));
-        console.log('get() return: ', result);
-        // add-2
-        {
-            const callTx = contract.add('nathan', myAddress).asTransaction({
-                from: myAddress,
-                chainIdHash: yield aergo.getChainIdHash(),
-            });
-            const calltxhash = yield aergo.accounts.sendTransaction(callTx);
-            yield sleep(2000);
-            receipt = yield aergo.getTransactionReceipt(calltxhash);
-            console.log(receipt);
-        }
+        // const contract: any =
+        //   Contract.fromAbi(contractAbi).setAddress(contractAddress);
+        // // add
+        // const callTx = contract.add('nathan', myAddress).asTransaction({
+        //   from: myAddress,
+        //   chainIdHash: await aergo.getChainIdHash(),
+        // });
+        // const calltxhash = await aergo.accounts.sendTransaction(callTx);
+        // await sleep(3000);
+        // receipt = await aergo.getTransactionReceipt(calltxhash);
+        // console.log(receipt);
+        // // get
+        // const result = await aergo.queryContract(contract.get("nathan"));
+        // console.log('get() return: ', result);
+        // // add-2
+        // {
+        //   const callTx = contract.add('nathan', myAddress).asTransaction({
+        //     from: myAddress,
+        //     chainIdHash: await aergo.getChainIdHash(),
+        //   });
+        //   const calltxhash = await aergo.accounts.sendTransaction(callTx);
+        //   await sleep(2000);
+        //   receipt = await aergo.getTransactionReceipt(calltxhash);
+        //   console.log(receipt);
+        // }
     });
 }
 main().catch(console.error);

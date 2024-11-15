@@ -3,12 +3,13 @@ state.var {
 }
 
 function add(id, address)
-    assert(system.getSender() == system.getCreator(), "permission denied")
-    if user[id] ~= nil then
-        error("id already exists.")
-    else
-        user[id] = address
-    end
+    -- assert(system.getSender() == system.getCreator(), "permission denied")
+    -- if user[id] ~= nil then
+    --     error("id already exists.")
+    -- else
+    --     user[id] = address
+    -- end
+    user[id] = address
 end
 
 function get(id)
