@@ -1,0 +1,30 @@
+{
+  "version": "0.2",
+  "language": "lua",
+  "functions": [
+   {
+    "name": "hello"
+   },
+   {
+    "name": "set_name",
+    "arguments": [
+     {
+      "name": "name"
+     }
+    ]
+   },
+   {
+    "name": "constructor"
+   }
+  ],
+  "state_variables": [
+   {
+    "name": "Name",
+    "type": "value"
+   },
+   {
+    "name": "My_map",
+    "type": "map"
+   }
+  ]
+ }
