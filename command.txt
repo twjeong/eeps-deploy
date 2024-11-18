@@ -1,4 +1,5 @@
 
+# test
 npm start deploy ./contract/user.lua
 npm start call AmfyHoe7zSYnJbA9MjzrN1t9FdTnyfdddDc2MBVjPUxnvqxEqZK4 ./contract/user.abi.json add nathan dfafdasfdasfa
 npm start query AmfyHoe7zSYnJbA9MjzrN1t9FdTnyfdddDc2MBVjPUxnvqxEqZK4 ./contract/user.abi.json get nathan
@@ -6,3 +7,12 @@ npm start query AmfyHoe7zSYnJbA9MjzrN1t9FdTnyfdddDc2MBVjPUxnvqxEqZK4 ./contract/
 npm start deploy ./contract/hello.lua
 npm start call AmfxY6Y7t8Sf2qxZD42Pgk2GEDMfQCbU1nbKMnRwZTckfKedvdGK ./contract/hello.abi.json set_name nathan
 npm start query AmfxY6Y7t8Sf2qxZD42Pgk2GEDMfQCbU1nbKMnRwZTckfKedvdGK ./contract/hello.abi.json hello
+
+# production
+npm start:production deploy ./contract/user.lua
+npm start:production call AmfyHoe7zSYnJbA9MjzrN1t9FdTnyfdddDc2MBVjPUxnvqxEqZK4 ./contract/user.abi.json add nathan dfafdasfdasfa
+npm start:production query AmfyHoe7zSYnJbA9MjzrN1t9FdTnyfdddDc2MBVjPUxnvqxEqZK4 ./contract/user.abi.json get nathan
+
+npm start:production deploy ./contract/hello.lua
+npm start:production call AmfxY6Y7t8Sf2qxZD42Pgk2GEDMfQCbU1nbKMnRwZTckfKedvdGK ./contract/hello.abi.json set_name nathan
+npm start:production query AmfxY6Y7t8Sf2qxZD42Pgk2GEDMfQCbU1nbKMnRwZTckfKedvdGK ./contract/hello.abi.json hello

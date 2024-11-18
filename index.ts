@@ -40,6 +40,7 @@ async function deployContract(
   const deployTxhash = await aergo.accounts.sendTransaction(tx);
   await sleep(3000);
   const receipt = await aergo.getTransactionReceipt(deployTxhash);
+  console.log("receipt: ", receipt);
   return receipt.contractaddress.toString();
 }
 
