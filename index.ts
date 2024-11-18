@@ -105,7 +105,11 @@ async function main() {
     new GrpcProvider({ url: process.env.ENDPOINT })
   );
 
-  if (command === "deploy") {
+  if (command === "create-account") {
+    const account = await aergo.accounts.create("jkljkl..1");
+    console.log("account: ", account.toString());
+  }
+  else if (command === "deploy") {
     if (args.length < 2) {
       throw new Error("Usage: node index.js deploy <contractPath>");
     }
