@@ -41,12 +41,13 @@ async function deployContract(
   await sleep(3000);
   const receipt = await aergo.getTransactionReceipt(deployTxhash);
   console.log("receipt: ", receipt);
-  return receipt.contractaddress.toString();
+  const contractAddress = receipt.contractaddress.toString();
+  writeEnvVariable("CONTRACT_ADDRESS", contractAddress);
+  return contractAddress;
 }
 
 async function callContract(
   aergo: AergoClient,
-  contractAddress: string,
   abiPath: any,
   method: string,
   args: any[]
@@ -54,6 +55,12 @@ async function callContract(
   if (!myAddress) {
     throw new Error(
       "ACCOUNT_ADDRESS is not defined in the environment variables"
+    );
+  }
+
+  if (process.env.CONTRACT_ADDRESS === undefined) {
+    throw new Error(
+      "CONTRACT_ADDRESS is not defined in the environment variables"
     );
   }
   await aergo.accounts.unlock(myAddress, "jkljkl..1");
@@ -65,7 +72,7 @@ async function callContract(
   const abi = JSON.parse(
     fs.readFileSync(resolve(__dirname, abiPath)).toString()
   );
-  const contract: any = Contract.fromAbi(abi).setAddress(contractAddress);
+  const contract: any = Contract.fromAbi(abi).setAddress(process.env.CONTRACT_ADDRESS);
   const callTx = contract[method](...args).asTransaction({
     from: myAddress,
     chainIdHash: await aergo.getChainIdHash(),
@@ -77,11 +84,17 @@ async function callContract(
 
 async function queryContract(
   aergo: AergoClient,
-  contractAddress: string,
   abiPath: any,
   method: string,
   args: any[]
 ): Promise<any> {
+
+  if (process.env.CONTRACT_ADDRESS === undefined) {
+    throw new Error(
+      "CONTRACT_ADDRESS is not defined in the environment variables"
+    );
+  }
+
   if (!Array.isArray(args)) {
     throw new TypeError("args must be an array");
   }
@@ -89,7 +102,7 @@ async function queryContract(
   const abi = JSON.parse(
     fs.readFileSync(resolve(__dirname, abiPath)).toString()
   );
-  const contract: any = Contract.fromAbi(abi).setAddress(contractAddress);
+  const contract: any = Contract.fromAbi(abi).setAddress(process.env.CONTRACT_ADDRESS);
   return await aergo.queryContract(contract[method](...args));
 }
 
@@ -107,6 +120,7 @@ async function main() {
 
   if (command === "create-account") {
     const account = await aergo.accounts.create("jkljkl..1");
+    writeEnvVariable("ACCOUNT_ADDRESS", account.toString());
     console.log("account: ", account.toString());
   }
   else if (command === "deploy") {
@@ -119,37 +133,59 @@ async function main() {
       await deployContract(aergo, contractPath)
     );
   } else if (command === "call") {
-    if (args.length < 5) {
+    if (args.length < 4) {
       throw new Error(
-        "Usage: node index.js call <contractAddress> <abiPath> <method> [args]"
+        "Usage: node index.js call <abiPath> <method> [args]"
       );
     }
-    const contractAddress = args[1];
-    const abiPath = args[2];
-    const method = args[3];
-    const methodArgs = args.slice(4) || [];
+    const abiPath = args[1];
+    const method = args[2];
+    const methodArgs = args.slice(3) || [];
 
     console.log(
       "receipt: ",
-      await callContract(aergo, contractAddress, abiPath, method, methodArgs)
+      await callContract(aergo, abiPath, method, methodArgs)
     );
   } else if (command === "query") {
     if (args.length < 4) {
       throw new Error(
-        "Usage: node index.js query <contractAddress> <abiPath> <method> [args]"
+        "Usage: node index.js query <abiPath> <method> [args]"
       );
     }
-    const contractAddress = args[1];
-    const abiPath = args[2];
-    const method = args[3];
-    const methodArgs = args.slice(4) || [];
+    const abiPath = args[1];
+    const method = args[2];
+    const methodArgs = args.slice(3) || [];
 
     console.log(
-      await queryContract(aergo, contractAddress, abiPath, method, methodArgs)
+      await queryContract(aergo, abiPath, method, methodArgs)
     );
   } else {
     throw new Error(`Unknown command: ${command}`);
   }
 }
+
+function writeEnvVariable(key: string, value: string): void {
+  const envPath = resolve(__dirname, envFile);
+  let envContent = '';
+
+  // .env 파일이 존재하는지 확인
+  if (fs.existsSync(envPath)) {
+    envContent = fs.readFileSync(envPath, 'utf8');
+  }
+
+  const envVars = envContent.split('\n').filter(line => line.trim() !== '');
+  const existingVarIndex = envVars.findIndex(line => line.startsWith(`${key}=`));
+
+  if (existingVarIndex !== -1) {
+    // 기존 키 업데이트
+    envVars[existingVarIndex] = `${key}=${value}`;
+  } else {
+    // 새로운 키 추가
+    envVars.push(`${key}=${value}`);
+  }
+
+  fs.writeFileSync(envPath, envVars.join('\n'));
+}
+
 
 main().catch(console.error);
