@@ -9,6 +9,8 @@ npm start deploy ./contract/hello.lua
 npm start call ./contract/hello.abi.json set_name nathan
 npm start query ./contract/hello.abi.json hello
 
+npm start transfer ./recipeints/send.csv
+
 # production
 npm run start:production create-account
 
