@@ -21,3 +21,7 @@ npm run start:production query ./contract/user.abi.json get nathan
 npm run start:production deploy ./contract/hello.lua
 npm run start:production call ./contract/hello.abi.json set_name nathan
 npm run start:production query ./contract/hello.abi.json hello
+
+# client side
+npm start create-account-client-side
+npm start deploy-client-side ./contract/user.lua
